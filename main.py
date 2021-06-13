@@ -1,4 +1,4 @@
-
+"""https://github.com/yardenho/part1_q2.git"""
 
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
@@ -30,7 +30,7 @@ def simpson(f, startPoint, endPoint, parts):
     x = sp.symbols('x')
     func = lambdify(x, f)
     gap = abs(endPoint - startPoint) / parts  # calculate h
-    string = "Integral(" + str(start_point) + ", " + str(end_point) + ") = 1/3 * " + str(gap) + "[f(" + str(start_point) + ")"
+    string = "Integral(" + str(startPoint) + ", " + str(endPoint) + ") = 1/3 * " + str(gap) + "[f(" + str(startPoint) + ")"
     appr = func(startPoint)  # placing the start point in the function
     for i in range(1, parts):  # run over the parts
         if i % 2 == 0:  # if is the even place
@@ -41,7 +41,7 @@ def simpson(f, startPoint, endPoint, parts):
             appr += 4 * func((i * gap) + startPoint)
         if i % 4 ==0:  # for the printing
             string += "\n"
-    string += " * f(" + str(end_point) + ")]\n"
+    string += " * f(" + str(endPoint) + ")]\n"
     print(string)  # print the equation
     appr += func(endPoint)
     appr *= 1 / 3 * gap
@@ -63,7 +63,7 @@ def rombergMethod(f, a, b, end, epsilon):
         results[k][1] = res  # save the value in the matrix
         print("R" + str(k+1) + "," + str(1) + " = " + str(res))  # print the value
     for j in range(2, end + 1):
-        for k in range(j, end + 1):
+        for k in range(2, end + 1):
             results[k][j] = results[k][j - 1] + ((1 / ((4 ** (j - 1)) - 1)) * (results[k][j - 1] - results[k - 1][j - 1]))
             print("R" + str(k) + "," + str(j) + " = " + str(results[k][j]))  # print the value
             if abs(results[k][j] - results[k - 1][j]) < epsilon:  # if the difference is less then epsilon
@@ -110,7 +110,7 @@ def rangeDivision(polinom, start_point, end_point, epsilon, function):
         if iter is not None:  # if the return iteration value is not None
             if (res > -epsilon) and (res < epsilon):  # check if the result is very close to 0
                 res = 0
-            print("The root is " + str(res) + "\nNumber of iteration is: " + str(iter))
+            print("The root is " + calcFinalResult(str(res), 10**-4, '13', '18', '41') + "\nNumber of iteration is: " + str(iter))
             results.append(res)
             flag = True
         else:
@@ -124,7 +124,7 @@ def rangeDivision(polinom, start_point, end_point, epsilon, function):
                 res = 0
             if (lambdify(x, polinom)(res) > - epsilon) and (
                     lambdify(x, polinom)(res) < epsilon):  # only if the res is root
-                print("The root is " + str(res) + "\nNumber of iteration is: " + str(iter))
+                print("The root is " + calcFinalResult(str(res), 10**-4, '13', '18', '41') + "\nNumber of iteration is: " + str(iter))
                 results.append(res)
                 flag = True
             else:
@@ -238,25 +238,53 @@ def checkDiffer(l, d, epsilon):
     print("The difference is smaller than the epsilon for all the roots")
 
 
-print("******* Part 1 - Q2_a *******")
-x = sp.symbols('x')
-f = (sp.cos((x ** 2) + (5 * x) + 6) / (2 * ((math.exp(1)) ** (-x))))
-print("-----Secant Method -----")
-l = secant_method(f, -1.5, 2, 0.0001)
-print("-----Newton Raphson -----")
-d = NewtonRaphson(f, -1.5, 2, 0.0001)
-checkDiffer(l, d, 10**-7)
+def calcFinalResult(result, epsilon, day, hour, minutes):
+    """
+    :param result: the result
+    :param epsilon: the epsilon we decided on for the question
+    :param day: the day of the calculation
+    :param hour: the hour of the calculation
+    :param minutes: the minutes of the calculation
+    :return: the result by the requested format
+    """
+    stringRes = str(result)  # cast the result to string
+    i = 0
+    while stringRes[i] is not ".":  # run over the string while we get to the point
+        i += 1  # count how many digits there is before the point
+    i += 1
+    count = 1
+    while epsilon < 1:  # checking how digit needs after the point
+        epsilon *= 10
+        count += 1
+    stringRes = stringRes[:i + count] + "00000" + day + hour + minutes
+    return stringRes
 
-print("\n******* Part 1 - Q2_b *******")
-start_point = 0
-end_point = 1
-part = 18
-epsilon = 10**-4
-print("-----Simpson Method -----")
-print("Final result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(simpson(f, start_point, end_point, part)))
-print("\n-----Romberg Method -----")
-print("\nFinal result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(rombergMethod(f, start_point, end_point, 5, epsilon)))
 
+
+def driver():
+    print("******* Part 1 - Q2_a *******")
+    x = sp.symbols('x')
+    f = (sp.cos((x ** 2) + (5 * x) + 6) / (2 * ((math.exp(1)) ** (-x))))
+    print("-----------Secant Method -----------")
+    l = secant_method(f, -1.5, 2, 0.0001)
+    print("-----------Newton Raphson -----------")
+    d = NewtonRaphson(f, -1.5, 2, 0.0001)
+    checkDiffer(l, d, 10 ** -7)
+
+    print("\n******* Part 1 - Q2_b *******")
+    start_point = 0
+    end_point = 1
+    part = 18
+    epsilon = 10 ** -4
+    print("-----Simpson Method -----")
+    print("Final result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(
+        calcFinalResult(simpson(f, start_point, end_point, part), epsilon, '13', '18', '41')))
+    print("\n-----Romberg Method -----")
+    print("\nFinal result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(
+        calcFinalResult(rombergMethod(f, start_point, end_point, 5, epsilon), epsilon, '13', '18', '41')))
+
+
+driver()
 
 
 
