@@ -60,7 +60,7 @@ def rombergMethod(f, a, b, end, epsilon):
     results = [[0 for i in range(end + 1)] for j in range(end + 1)]  # build matrix
     for k in range(0, end):
         res = trapezoidMethod(f, a, b, 2 ** k)  # calculate the values of trapezoid method
-        results[k][1] = res  # save the value in the matrix
+        results[k+1][1] = res  # save the value in the matrix
         print("R" + str(k+1) + "," + str(1) + " = " + str(res))  # print the value
     for j in range(2, end + 1):
         for k in range(2, end + 1):
@@ -281,7 +281,7 @@ def driver():
         calcFinalResult(simpson(f, start_point, end_point, part), epsilon, '13', '18', '41')))
     print("\n-----Romberg Method -----")
     print("\nFinal result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(
-        calcFinalResult(rombergMethod(f, start_point, end_point, 5, epsilon), epsilon, '13', '18', '41')))
+        calcFinalResult(rombergMethod(f, start_point, end_point, 6, epsilon), epsilon, '13', '18', '41')))
 
 
 driver()
