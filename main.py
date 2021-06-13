@@ -63,7 +63,7 @@ def rombergMethod(f, a, b, end, epsilon):
         results[k+1][1] = res  # save the value in the matrix
         print("R" + str(k+1) + "," + str(1) + " = " + str(res))  # print the value
     for j in range(2, end + 1):
-        for k in range(2, end + 1):
+        for k in range(j, end + 1):
             results[k][j] = results[k][j - 1] + ((1 / ((4 ** (j - 1)) - 1)) * (results[k][j - 1] - results[k - 1][j - 1]))
             print("R" + str(k) + "," + str(j) + " = " + str(results[k][j]))  # print the value
             if abs(results[k][j] - results[k - 1][j]) < epsilon:  # if the difference is less then epsilon
@@ -270,10 +270,10 @@ def driver():
     print("-----------Newton Raphson -----------")
     d = NewtonRaphson(f, -1.5, 2, 0.0001)
     checkDiffer(l, d, 10 ** -7)
-
+    f = sp.sin(x)
     print("\n******* Part 1 - Q2_b *******")
     start_point = 0
-    end_point = 1
+    end_point = math.pi # ?????????????????
     part = 18
     epsilon = 10 ** -4
     print("-----Simpson Method -----")
@@ -281,7 +281,7 @@ def driver():
         calcFinalResult(simpson(f, start_point, end_point, part), epsilon, '13', '18', '41')))
     print("\n-----Romberg Method -----")
     print("\nFinal result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(
-        calcFinalResult(rombergMethod(f, start_point, end_point, 6, epsilon), epsilon, '13', '18', '41')))
+        calcFinalResult(rombergMethod(f, start_point, end_point, 5, epsilon), epsilon, '13', '18', '41')))
 
 
 driver()
