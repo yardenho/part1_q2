@@ -287,11 +287,18 @@ def driver():
     part = 18
     epsilon = 10 ** -4
     print("-----Simpson Method -----")
+    s = simpson(f, start_point, end_point, part)
     print("Final result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(
-        calcFinalResult(simpson(f, start_point, end_point, part), epsilon, '13', '18', '41')))
+        calcFinalResult(s, epsilon, '13', '18', '41')))
     print("\n-----Romberg Method -----")
+    r = rombergMethod(f, start_point, end_point, 5, epsilon)
     print("\nFinal result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(
-        calcFinalResult(rombergMethod(f, start_point, end_point, 5, epsilon), epsilon, '13', '18', '41')))
+        calcFinalResult(r, epsilon, '13', '18', '41')))
+
+    if abs(s - r) <= epsilon:
+        print("\n* The difference between the two methods is smaller than the epsilon")
+    else:
+        print("\n* The difference between the two methods is bigger than the epsilon - needs another method")
 
 
 driver()
