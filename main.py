@@ -59,9 +59,10 @@ def rombergMethod(f, a, b, end, epsilon):
     """
     results = [[0 for i in range(end + 1)] for j in range(end + 1)]  # build matrix
     for k in range(0, end):
+        print("R" + str(k+1) + "," + str(1) + " = ", end="")
         res = trapezoidMethod(f, a, b, 2 ** k)  # calculate the values of trapezoid method
         results[k+1][1] = res  # save the value in the matrix
-        print("R" + str(k+1) + "," + str(1) + " = " + str(res))  # print the value
+        print(" = " +str(res))  # print the value
     for j in range(2, end + 1):
         for k in range(j, end + 1):
             results[k][j] = results[k][j - 1] + ((1 / ((4 ** (j - 1)) - 1)) * (results[k][j - 1] - results[k - 1][j - 1]))
@@ -83,8 +84,17 @@ def trapezoidMethod(f, a, b, n):
     f = lambdify(x, f)
     h = (b - a) / n
     sum = 0
+    save = a
+    count = 0
     while a < b:
         sum += 0.5 * ((a + h) - a) * (f(a) + f(a + h))
+        count +=1
+        if a is not save:
+            print(" + ", end="")
+        if count is 3:
+            print("\n       ", end="")
+            count = 0
+        print("1/2 * (" + str(b) + " - " + str(a) + ") * (f(" + str(a) + " + f(" + str(a + h) + "))", end="")
         a += h
     return sum
 
@@ -271,6 +281,7 @@ def driver():
     d = NewtonRaphson(f, -1.5, 2, 0.0001)
     checkDiffer(l, d, 10 ** -7)
     print("\n******* Part 1 - Q2_b *******")
+
     start_point = 0
     end_point = 1
     part = 18
@@ -284,7 +295,6 @@ def driver():
 
 
 driver()
-
 
 
 
