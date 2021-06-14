@@ -292,6 +292,7 @@ def driver():
     epsilon = 10 ** -4
     print("-----Simpson Method -----")
     s = simpson(f, start_point, end_point, part)
+    print("area is " + str(s))
     print("Final result:\nIntegral(" + str(start_point) + ", " + str(end_point) + ") = " + str(
         calcFinalResult(s, epsilon, '13', '18', '41')))
     print("\n-----Romberg Method -----")
