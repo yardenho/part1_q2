@@ -266,6 +266,10 @@ def calcFinalResult(result, epsilon, day, hour, minutes):
     while epsilon < 1:  # checking how digit needs after the point
         epsilon *= 10
         count += 1
+    differ = len(stringRes)
+    while differ < i + count:   # fill difference with zero if the number is to short after the point
+        stringRes += "0"
+        differ += 1
     stringRes = stringRes[:i + count] + "00000" + day + hour + minutes
     return stringRes
 
